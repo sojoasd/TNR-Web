@@ -1,0 +1,21 @@
+.sec-concept{
+    position: relative;
+}
+
+#sec-concept-inner{
+    position: absolute;
+    top:50px;
+    padding-left: 10%;
+}
+
+.bg {
+    z-index: -99;
+}
+.bg img {
+    min-height: 100%;
+    width: 100%;
+}
+
+.content{
+    color: black;
+}
