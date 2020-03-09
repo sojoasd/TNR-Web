@@ -1,37 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
 
-import { AppComponent } from './app.component';
-import { MainComponent } from './main/main.component';
-import { LayoutComponent } from './layout/layout.component';
-import { AppRoutingModule } from './app-routing.module';
-import { ConceptComponent } from './concept/concept.component';
-import { VisionComponent } from './vision/vision.component';
-import { ServicesComponent } from './services/services.component';
-import { TeamComponent } from './team/team.component';
-import { ExperiencesComponent } from './experiences/experiences.component';
-import { CobrandComponent } from './cobrand/cobrand.component';
-import { ContactComponent } from './contact/contact.component';
+import { AppComponent } from "./app.component";
+import { MainComponent } from "./main/main.component";
+import { LayoutComponent } from "./layout/layout.component";
+import { AppRoutingModule } from "./app-routing.module";
+import { ContactComponent } from "./contact/contact.component";
+import { EnsureLoginGuard } from "./ensure-login.guard";
+import { LoginComponent } from "./login/login.component";
+import { NgxLoadingModule } from "ngx-loading";
+import { HttpClientModule } from "@angular/common/http";
+import { FolderComponent } from './folder/folder.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MainComponent,
-    LayoutComponent,
-    ConceptComponent,
-    VisionComponent,
-    ServicesComponent,
-    TeamComponent,
-    ExperiencesComponent,
-    CobrandComponent,
-    ContactComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
+  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent],
+  imports: [BrowserModule, AppRoutingModule, NgxLoadingModule.forRoot({}), HttpClientModule],
+  providers: [EnsureLoginGuard],
   bootstrap: [AppComponent]
 })
-
-export class AppModule { }
+export class AppModule {}

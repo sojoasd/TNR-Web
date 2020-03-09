@@ -1,0 +1,59 @@
+
+
+
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css"> -->
+
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<div class="my-container">
+  <ng-template #customLoadingTemplate>
+    <div class="custom-class">
+
+    </div>
+  </ng-template>
+
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+</div>
+
+<div class="overlay" *ngIf="showSpinner">
+  <div class="spinner-wrapper">
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 login-sec">
+      <h2 class="text-center">Sign In</h2>
+      <div class="google-login-div">
+        <a class="google-login-a" style="text-transform:none" (click)="login()">
+          <div class="google-login-icon">
+            <img class="google-login-img" width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+          </div>
+          Login with Google
+        </a>
+        <br>
+        <a href="https://accounts.google.com/signup/v2/webcreateaccount?continue=https%3A%2F%2Fwww.google.com%2F%3Fgws_rd%3Dssl&hl=zh-TW&dsh=S403373288%3A1583761563299277&gmb=exp&biz=false&flowName=GlifWebSignIn&flowEntry=SignUp" target="_blank">Create New Account</a>
+      </div>
+
+
+
+    </div>
+    <div class="col-md-8 banner-sec">
+      <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+        <div class="carousel-inner" role="listbox">
+          <div class="carousel-item active">
+            <img class="d-block img-fluid" src="./../../assets/images/login-img.jpg" alt="">
+            <div class="carousel-caption d-none d-md-block">
+              <!-- <div class="banner-text">
+                <h2>This is Heaven</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</p>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

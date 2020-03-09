@@ -1,37 +1,28 @@
 import { LayoutComponent } from "./layout/layout.component";
 import { MainComponent } from "./main/main.component";
-import { ConceptComponent } from "./concept/concept.component";
 import { fallbackRoute } from "./shared/fallback-route";
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { VisionComponent } from "./vision/vision.component";
-import { ServicesComponent } from "./services/services.component";
-import { TeamComponent } from "./team/team.component";
-import { ExperiencesComponent } from "./experiences/experiences.component";
-import { CobrandComponent } from "./cobrand/cobrand.component";
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 import { ContactComponent } from "./contact/contact.component";
+import { LoginComponent } from "./login/login.component";
+import { EnsureLoginGuard } from "./ensure-login.guard";
 
 const routes: Routes = [
-    {path: '', redirectTo: 'Index', pathMatch: 'full'},
-    { 
-        path: '', component: LayoutComponent,
-        children: [
-            {path: 'Index', component: MainComponent},
-            {path: 'ConceptPurpose', component: ConceptComponent},
-            {path: 'CompanyVision', component: VisionComponent},
-            {path: 'Services', component: ServicesComponent},
-            {path: 'TeamMembers', component: TeamComponent},
-            {path: 'Experiences', component: ExperiencesComponent},
-            {path: 'Cobrand', component: CobrandComponent},
-            {path: 'Contact', component: ContactComponent}
-        ]
-    },
-    fallbackRoute
+  { path: "", redirectTo: "Index", pathMatch: "full" },
+  {
+    path: "",
+    component: LayoutComponent,
+    children: [
+      { path: "Login", component: LoginComponent },
+      { path: "Index", component: MainComponent },
+      { path: "Contact", component: ContactComponent, canActivate: [EnsureLoginGuard] }
+    ]
+  },
+  fallbackRoute
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-
 export class AppRoutingModule {}
