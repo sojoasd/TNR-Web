@@ -4,20 +4,25 @@ import { fallbackRoute } from "./shared/fallback-route";
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { ContactComponent } from "./contact/contact.component";
+import { FolderListComponent } from "./folder-list/folder-list.component";
 import { LoginComponent } from "./login/login.component";
 import { EnsureLoginGuard } from "./ensure-login.guard";
+import { FolderComponent } from "./folder/folder.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "Index", pathMatch: "full" },
+  { path: "", redirectTo: "folder-list", pathMatch: "full" },
   {
     path: "",
     component: LayoutComponent,
     children: [
-      { path: "Login", component: LoginComponent },
-      { path: "Index", component: MainComponent },
-      { path: "Contact", component: ContactComponent, canActivate: [EnsureLoginGuard] }
+      { path: "login", pathMatch: "full", component: LoginComponent },
+      { path: "index", component: MainComponent },
+      { path: "contact", component: ContactComponent, canActivate: [EnsureLoginGuard] },
+      { path: "folder-list", component: FolderListComponent },
+      { path: "folder", component: FolderComponent }
     ]
   },
+  { path: "**", redirectTo: "login", pathMatch: "full" },
   fallbackRoute
 ];
 

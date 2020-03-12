@@ -10,12 +10,23 @@ import { EnsureLoginGuard } from "./ensure-login.guard";
 import { LoginComponent } from "./login/login.component";
 import { NgxLoadingModule } from "ngx-loading";
 import { HttpClientModule } from "@angular/common/http";
-import { FolderComponent } from './folder/folder.component';
+import { FolderComponent } from "./folder/folder.component";
+import { FolderListComponent } from "./folder-list/folder-list.component";
+import { FormsModule } from "@angular/forms";
+import { Injector } from "@angular/core";
+import HttpHelper from "./utility/httpHelper";
+
+export let InjectorInstance: Injector;
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent],
-  imports: [BrowserModule, AppRoutingModule, NgxLoadingModule.forRoot({}), HttpClientModule],
+  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent, FolderListComponent],
+  imports: [BrowserModule, AppRoutingModule, NgxLoadingModule.forRoot({}), HttpClientModule, FormsModule],
   providers: [EnsureLoginGuard],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private injector: Injector) {
+    InjectorInstance = this.injector;
+    HttpHelper.init();
+  }
+}
