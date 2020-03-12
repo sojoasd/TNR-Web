@@ -10,7 +10,7 @@ import { EnsureLoginGuard } from "./ensure-login.guard";
 import { FolderComponent } from "./folder/folder.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "folder-list", pathMatch: "full" },
+  { path: "", redirectTo: "login", pathMatch: "full" },
   {
     path: "",
     component: LayoutComponent,

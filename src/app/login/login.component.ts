@@ -4,6 +4,7 @@ import HttpHelper from "../utility/httpHelper";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ILoginUser } from "src/app/model/user";
 import { UserService } from "src/app/service/user-service";
+import { IHttpRequest } from "../model/request";
 
 @Component({
   selector: "app-login",
@@ -20,31 +21,32 @@ export class LoginComponent implements OnInit {
 
   loading: boolean;
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loading = true;
 
     const code = this.activeRouter.snapshot.queryParams.code;
 
     if (code) {
       const loginData = `code=${this.activeRouter.snapshot.queryParams.code}`;
-      console.log("code: ", loginData);
+      // console.log("code: ", loginData);
 
-      this.http.post("http://localhost:4002/account/login", { code: loginData }).subscribe(
-        (value: ILoginUser) => {
-          this.userService.setUserInfo(value);
-          this.router.navigate(["/folder"]);
-        },
-        (error: any) => {
-          console.log("error:", error);
-        }
-      );
+      const request: IHttpRequest = { url: "http://localhost:4002/account/login", body: { code: loginData } };
+
+      try {
+        const data = await HttpHelper.post(request);
+        this.userService.setUserInfo(data as ILoginUser);
+        this.router.navigate(["/folder-list"]);
+      } catch (error) {
+        console.log("error:", error);
+        throw error;
+      }
     }
 
     const userInfo = this.userService.getUserInfo();
     // console.log("userInfo: ", userInfo);
 
     if (userInfo) {
-      this.router.navigate(["/folder"]);
+      this.router.navigate(["/folder-list"]);
     }
 
     this.loading = false;
@@ -52,7 +54,8 @@ export class LoginComponent implements OnInit {
 
   async login() {
     try {
-      const data = await HttpHelper.get("http://localhost:4002/account/login");
+      const request: IHttpRequest = { url: "http://localhost:4002/account/login" };
+      const data = await HttpHelper.get(request);
       const url = data as string;
       window.open(url, "_self");
 

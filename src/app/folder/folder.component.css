@@ -6,6 +6,7 @@
   transition: 0.2s background-color ease-out;
   text-align: center;
   margin: 3%;
+  cursor: pointer;
 }
 .folder i.fa-folder {
   height: 10% !important;
