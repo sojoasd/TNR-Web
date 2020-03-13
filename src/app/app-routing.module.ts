@@ -8,9 +8,10 @@ import { FolderListComponent } from "./folder-list/folder-list.component";
 import { LoginComponent } from "./login/login.component";
 import { EnsureLoginGuard } from "./ensure-login.guard";
 import { FolderComponent } from "./folder/folder.component";
+import { MapComponent } from "./map/map.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "login", pathMatch: "full" },
+  { path: "", redirectTo: "map", pathMatch: "full" },
   {
     path: "",
     component: LayoutComponent,
@@ -19,7 +20,8 @@ const routes: Routes = [
       { path: "index", component: MainComponent },
       { path: "contact", component: ContactComponent, canActivate: [EnsureLoginGuard] },
       { path: "folder-list", component: FolderListComponent },
-      { path: "folder", component: FolderComponent }
+      { path: "folder", component: FolderComponent },
+      { path: "map", component: MapComponent }
     ]
   },
   { path: "**", redirectTo: "login", pathMatch: "full" },
