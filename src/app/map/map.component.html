@@ -1,11 +1,20 @@
-<h1>{{title}}</h1>
+<h1>{{ centerPoint.title }}</h1>
 
-<agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoomValue">
-    <agm-marker [latitude]="lat" [longitude]="lng" [iconUrl]="iconUrl" (markerClick)="markerClick(infowindow)">
-        <agm-info-window #infowindow [latitude]="lat+0.0005" [longitude]="lng" [isOpen]="isOpen">
-            <h5>國立臺中科技大學</h5>
-            <p>National Taichung University of Science and Technology.</p>
-          </agm-info-window>
-    </agm-marker>
-    
+<!-- <agm-map [latitude]="centerPoint.latitude" [longitude]="centerPoint.longitude" [zoom]="centerPoint.zoom">
+    <div *ngFor="let marker of markers">
+        <app-marker [marker]="marker"></app-marker>
+    </div>
+</agm-map> -->
+
+<agm-map [latitude]="centerPoint.latitude" [longitude]="centerPoint.longitude" [zoom]="centerPoint.zoom">
+  <agm-overlay *ngFor="let marker of markers" #infowindow [latitude]="marker.latitude" [longitude]="marker.longitude">
+      <img class="agm-img" [class.agm-img-selected]="marker.icon.selected === true" src="{{ marker.icon.url }}" (click)="markerClick(marker.id)" />
+      <!-- <agm-info-window #infowindow [latitude]="marker.latitude + 0.0005" [longitude]="marker.longitude" [isOpen]="isOpen">
+        <div>
+          <h5>{{ marker.title }}</h5>
+          <br />
+          <img src="{{ marker.icon.url }}" style="width: 70px; height: 70px; transform:rotate(180deg)" alt="" />
+        </div>
+      </agm-info-window> -->
+  </agm-overlay>
 </agm-map>

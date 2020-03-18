@@ -9,9 +9,11 @@ import { LoginComponent } from "./login/login.component";
 import { EnsureLoginGuard } from "./ensure-login.guard";
 import { FolderComponent } from "./folder/folder.component";
 import { MapComponent } from "./map/map.component";
+import { MarkerComponent } from "./marker/marker.component";
+import { MarkerModalComponent } from "./marker-modal/marker-modal.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "map", pathMatch: "full" },
+  { path: "", redirectTo: "marker-modal", pathMatch: "full" },
   {
     path: "",
     component: LayoutComponent,
@@ -21,7 +23,9 @@ const routes: Routes = [
       { path: "contact", component: ContactComponent, canActivate: [EnsureLoginGuard] },
       { path: "folder-list", component: FolderListComponent },
       { path: "folder", component: FolderComponent },
-      { path: "map", component: MapComponent }
+      { path: "map", component: MapComponent },
+      { path: "marker", component: MarkerComponent },
+      { path: "marker-modal", component: MarkerModalComponent }
     ]
   },
   { path: "**", redirectTo: "login", pathMatch: "full" },

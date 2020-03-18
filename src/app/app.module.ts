@@ -15,20 +15,26 @@ import { FolderComponent } from "./folder/folder.component";
 import { FolderListComponent } from "./folder-list/folder-list.component";
 import { FormsModule } from "@angular/forms";
 import { Injector } from "@angular/core";
+import { ModalModule } from "ngx-bootstrap/modal";
+import { AgmOverlays } from "agm-overlays";
 import HttpHelper from "./utility/httpHelper";
 import { MapComponent } from "./map/map.component";
+import { MarkerComponent } from "./marker/marker.component";
+import { MarkerModalComponent } from "./marker-modal/marker-modal.component";
 
 export let InjectorInstance: Injector;
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent, FolderListComponent, MapComponent],
+  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent, FolderListComponent, MapComponent, MarkerComponent, MarkerModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgxLoadingModule.forRoot({}),
     HttpClientModule,
     FormsModule,
-    AgmCoreModule.forRoot({ apiKey: "AIzaSyB3RFJi67wKgdex3zcdwtsm-E1G3KeNFh4" })
+    AgmOverlays,
+    AgmCoreModule.forRoot({ apiKey: "AIzaSyB3RFJi67wKgdex3zcdwtsm-E1G3KeNFh4" }),
+    ModalModule.forRoot()
   ],
   providers: [EnsureLoginGuard],
   bootstrap: [AppComponent]
