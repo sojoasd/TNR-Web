@@ -19,13 +19,11 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { AgmOverlays } from "agm-overlays";
 import HttpHelper from "./utility/httpHelper";
 import { MapComponent } from "./map/map.component";
-import { MarkerComponent } from "./marker/marker.component";
-import { MarkerModalComponent } from "./marker-modal/marker-modal.component";
 
 export let InjectorInstance: Injector;
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent, FolderListComponent, MapComponent, MarkerComponent, MarkerModalComponent],
+  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent, FolderListComponent, MapComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

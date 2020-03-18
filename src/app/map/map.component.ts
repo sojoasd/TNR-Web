@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ElementRef, ViewChild } from "@angular/core";
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
 import { IMapCenterPointInfo, IFileListCheckWithDB, IFile } from "../model/map";
 import { getCenterPoint } from "../utility/geoLocationHelper";
 
@@ -8,11 +9,14 @@ import { getCenterPoint } from "../utility/geoLocationHelper";
   styleUrls: ["./map.component.css"]
 })
 export class MapComponent implements OnInit {
+  @ViewChild("mySidenav") sideNav: ElementRef;
+
   centerPoint: IMapCenterPointInfo;
   files: IFileListCheckWithDB[];
   markers: IFile[] = [];
+  modalRef: BsModalRef;
 
-  constructor() {}
+  constructor(private modalService: BsModalService) {}
 
   ngOnInit() {
     this.files = [
@@ -294,7 +298,6 @@ export class MapComponent implements OnInit {
     console.log(this.markers);
 
     this.centerPoint = getCenterPoint(this.markers);
-    this.centerPoint.title = "Angular4 AGM Demo";
     this.centerPoint.zoom = 15;
     console.log(this.centerPoint);
 
@@ -315,5 +318,18 @@ export class MapComponent implements OnInit {
 
   public markerClick(e) {
     console.log(e);
+  }
+
+  openModal(template: TemplateRef<any>) {
+    console.log(template);
+    this.modalRef = this.modalService.show(template);
+  }
+
+  openNav() {
+    this.sideNav.nativeElement.style.width = "250px";
+  }
+
+  closeNav() {
+    this.sideNav.nativeElement.style.width = "0px";
   }
 }

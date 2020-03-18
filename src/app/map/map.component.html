@@ -1,4 +1,4 @@
-<h1>{{ centerPoint.title }}</h1>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" />
 
 <!-- <agm-map [latitude]="centerPoint.latitude" [longitude]="centerPoint.longitude" [zoom]="centerPoint.zoom">
     <div *ngFor="let marker of markers">
@@ -6,10 +6,32 @@
     </div>
 </agm-map> -->
 
+<span style="font-size:30px;cursor:pointer" (click)="openNav()">&#9776; open</span>
+
+<div #mySidenav class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+  <div>About</div>
+  <div>Services</div>
+  <div>Clients</div>
+  <div>Contact</div>
+</div>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Modal</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This is a modal.
+  </div>
+</ng-template>
+
 <agm-map [latitude]="centerPoint.latitude" [longitude]="centerPoint.longitude" [zoom]="centerPoint.zoom">
   <agm-overlay *ngFor="let marker of markers" #infowindow [latitude]="marker.latitude" [longitude]="marker.longitude">
-      <img class="agm-img" [class.agm-img-selected]="marker.icon.selected === true" src="{{ marker.icon.url }}" (click)="markerClick(marker.id)" />
-      <!-- <agm-info-window #infowindow [latitude]="marker.latitude + 0.0005" [longitude]="marker.longitude" [isOpen]="isOpen">
+    <img class="agm-img" [class.agm-img-selected]="marker.icon.selected === true" src="{{ marker.icon.url }}" (click)="openModal(template)" />
+    <!-- <agm-info-window #infowindow [latitude]="marker.latitude + 0.0005" [longitude]="marker.longitude" [isOpen]="isOpen">
         <div>
           <h5>{{ marker.title }}</h5>
           <br />
