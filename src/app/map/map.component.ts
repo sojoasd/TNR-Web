@@ -10,11 +10,15 @@ import { getCenterPoint } from "../utility/geoLocationHelper";
 })
 export class MapComponent implements OnInit {
   @ViewChild("mySidenav") sideNav: ElementRef;
+  @ViewChild("template") myModal: TemplateRef<any>;
 
   centerPoint: IMapCenterPointInfo;
   files: IFileListCheckWithDB[];
   markers: IFile[] = [];
   modalRef: BsModalRef;
+  isOpenSideNav: Boolean = false;
+
+  modalInfo: IFile;
 
   constructor(private modalService: BsModalService) {}
 
@@ -286,7 +290,7 @@ export class MapComponent implements OnInit {
     this.files.map(f => {
       if (f.isDBExist) {
         f.fileInfo.icon = {
-          url: `https://drive.google.com/uc?id=${f.id}&export=download`,
+          url: `https://drive.google.com/thumbnail?id=${f.id}`,
           // scaledSize: { height: 40, width: 40 },
           selected: false
         };
@@ -295,11 +299,11 @@ export class MapComponent implements OnInit {
       }
     });
 
-    console.log(this.markers);
+    // console.log(this.markers);
 
     this.centerPoint = getCenterPoint(this.markers);
     this.centerPoint.zoom = 15;
-    console.log(this.centerPoint);
+    // console.log(this.centerPoint);
 
     // setTimeout(() => {
     //   this.markers.map(m => {
@@ -320,16 +324,23 @@ export class MapComponent implements OnInit {
     console.log(e);
   }
 
-  openModal(template: TemplateRef<any>) {
-    console.log(template);
-    this.modalRef = this.modalService.show(template);
+  openModal(markerId) {
+    console.log("markerId: ", markerId);
+    this.modalRef = this.modalService.show(this.myModal);
+  }
+
+  hideModal() {
+    console.log(this.myModal);
+    this.modalRef.hide();
   }
 
   openNav() {
-    this.sideNav.nativeElement.style.width = "250px";
+    this.sideNav.nativeElement.style.width = "300px";
+    this.isOpenSideNav = true;
   }
 
   closeNav() {
     this.sideNav.nativeElement.style.width = "0px";
+    this.isOpenSideNav = false;
   }
 }

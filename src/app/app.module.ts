@@ -19,11 +19,12 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { AgmOverlays } from "agm-overlays";
 import HttpHelper from "./utility/httpHelper";
 import { MapComponent } from "./map/map.component";
+import { SideNavSubComponent } from "./side-nav-sub/side-nav-sub.component";
 
 export let InjectorInstance: Injector;
 
 @NgModule({
-  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent, FolderListComponent, MapComponent],
+  declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent, FolderListComponent, MapComponent, SideNavSubComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

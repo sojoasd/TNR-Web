@@ -25,6 +25,7 @@ interface IFile {
   contact?: string;
   createEpochDate?: number;
   updateEpochDate?: number;
+  isDBExist?: boolean;
 }
 
 interface IFileListCheckWithDB {
