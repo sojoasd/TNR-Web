@@ -20,12 +20,13 @@ import { AgmOverlays } from "agm-overlays";
 import HttpHelper from "./utility/httpHelper";
 import { MapComponent } from "./map/map.component";
 import { SideNavSubComponent } from "./side-nav-sub/side-nav-sub.component";
+import { environment } from "../environments/environment";
 
 export let InjectorInstance: Injector;
 
 @NgModule({
   declarations: [AppComponent, MainComponent, LayoutComponent, ContactComponent, LoginComponent, FolderComponent, FolderListComponent, MapComponent, SideNavSubComponent],
-  imports: [BrowserModule, AppRoutingModule, NgxLoadingModule.forRoot({}), HttpClientModule, FormsModule, AgmOverlays, AgmCoreModule.forRoot({ apiKey: "" }), ModalModule.forRoot()],
+  imports: [BrowserModule, AppRoutingModule, NgxLoadingModule.forRoot({}), HttpClientModule, FormsModule, AgmOverlays, AgmCoreModule.forRoot({ apiKey: environment.mapApiKey }), ModalModule.forRoot()],
   providers: [EnsureLoginGuard],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,4 @@
-<div class="side-img-div">
+<div class="side-img-div" [class.db-exist]="side.isDBExist">
   <img class="side-img" src="https://drive.google.com/thumbnail?id={{side.id}}" (click)="openModal(side.id)" />
   <div class="img-handle">
     <span><i class="fa fa-cloud-download"></i></span>

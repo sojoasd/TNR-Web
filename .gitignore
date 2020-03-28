@@ -41,6 +41,7 @@ Thumbs.db
 /src/assets/css
 /src/assets/images
 /src/assets/fonts
+/src/environments
 
 package-lock.json
 

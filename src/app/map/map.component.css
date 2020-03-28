@@ -44,14 +44,19 @@ agm-map {
 }
 
 .side-img-div {
-  margin-bottom: 5%;
   text-align: center;
   margin-top: 10%;
   opacity: 0.8;
+  padding-top: 5%;
 }
 
 .side-img-div:hover {
   opacity: 1;
+}
+
+.db-exist {
+  background-color: lightgreen;
+  box-shadow: 3px 3px 5px 6px #cccccc;
 }
 
 .sidenav a,
@@ -145,4 +150,8 @@ agm-map {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.checkbox {
+  padding: 0.75rem 0 0.75rem 0;
 }

@@ -4,7 +4,6 @@ interface IMapCenterPointInfo {
   longitude: number;
   zoom?: number;
 }
-
 interface IFile {
   id?: string;
   title?: string;
@@ -13,16 +12,16 @@ interface IFile {
   fileName?: string;
   latitude?: number;
   longitude?: number;
-  isPending?: boolean;
-  isStray?: boolean;
-  isNoDog?: boolean;
-  isChained?: boolean;
-  uncertainCount?: number;
-  notNeuteredCount?: number;
-  neuteredCount?: number;
-  maleDogCount?: number;
-  description?: string;
-  contact?: string;
+  isPending?: boolean; //待處理
+  isStray?: boolean; //野犬
+  isNoDog?: boolean; //無狗
+  isChained?: boolean; // 鍊養
+  uncertainCount?: number; //不確定
+  notNeuteredCount?: number; //未紮母
+  neuteredCount?: number; //已紮母
+  maleDogCount?: number; //公狗
+  description?: string; //說明
+  contact?: string; //聯絡方式
   createEpochDate?: number;
   updateEpochDate?: number;
   isDBExist?: boolean;

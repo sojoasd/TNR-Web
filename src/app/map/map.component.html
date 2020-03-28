@@ -9,10 +9,13 @@
 
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
 
-<div #mySidenav id="mySidenav" class="sidenav" [ngClass]="{'sidenav-shadow': isOpenSideNav}">
-  <a href="javascript:void(0)" class="header-btn header-btn-refresh"><i class="fa fa-refresh"></i></a>
-  <a href="javascript:void(0)" class="header-btn header-btn-import" title="all import"><i class="fa fa-cloud-download"></i></a>
-  <a href="javascript:void(0)" class="header-btn header-btn-close" (click)="closeNav()"><i class="fa fa-times"></i></a>
+<div #mySidenav id="mySidenav" class="sidenav" [ngClass]="{ 'sidenav-shadow': isOpenSideNav }">
+  <div>
+    <a href="javascript:void(0)" class="header-btn header-btn-refresh"><i class="fa fa-refresh"></i></a>
+    <a href="javascript:void(0)" class="header-btn header-btn-import" title="all import"><i class="fa fa-cloud-download"></i></a>
+    <a href="javascript:void(0)" class="header-btn header-btn-close" (click)="closeNav()"><i class="fa fa-times"></i></a>
+  </div>
+
   <br />
   <div class="file-info" *ngFor="let side of files">
     <app-side-nav-sub [side]="side"></app-side-nav-sub>
@@ -74,16 +77,84 @@
   <div class="modal-body">
     <form>
       <div class="form-group">
-        <label for="file-title">Title</label>
-        <input class="form-control" id="file-title" placeholder="gps">
+        <label for="file-title">標題</label>
+        <input class="form-control" id="file-title" [value]="modalInfo.title ? modalInfo.title : ''" />
+      </div>
+      <div class="row form-group">
+        <div class="col">
+          <label for="file-latitude">經度</label>
+          <!-- <input type="text" id="file-latitude" class="form-control" type="number" step="0.001" maxlength="20" [value]="modalInfo.latitude ? modalInfo.latitude : ''" /> -->
+          <input type="text" id="file-latitude" class="form-control" type="number" step="0.001" maxlength="20" [(ngModel)]="modalInfo.latitude" name="latitude" />
+        </div>
+        <div class="col">
+          <label for="file-longitude">緯度</label>
+          <!-- <input type="text" id="file-longitude" class="form-control" type="number" step="0.001" maxlength="20" [value]="modalInfo.latitude ? modalInfo.latitude : ''" /> -->
+          <input type="text" id="file-longitude" class="form-control" type="number" step="0.001" maxlength="20" [(ngModel)]="modalInfo.longitude" name="longitude" />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col">
+          <div class="checkbox">
+            <label><input type="checkbox" [(ngModel)]="modalInfo.isPending" name="isPending" /> 待處理</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="checkbox">
+            <label><input type="checkbox" [(ngModel)]="modalInfo.isStray" name="isStray" /> 野犬</label>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col">
+          <div class="checkbox">
+            <label><input type="checkbox" [(ngModel)]="modalInfo.isNoDog" name="isNoDog" /> 無狗</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="checkbox">
+            <label><input type="checkbox" [(ngModel)]="modalInfo.isChained" name="isChained" /> 鏈養</label>
+          </div>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col">
+          <label for="file-uncertainCount">不確定</label>
+          <input type="text" id="file-uncertainCount" class="form-control" type="number" step="1" maxlength="3" [(ngModel)]="modalInfo.uncertainCount" name="uncertainCount" />
+        </div>
+        <div class="col">
+          <label for="file-notNeuteredCount">未紮母</label>
+          <input type="text" id="file-notNeuteredCount" class="form-control" type="number" step="1" maxlength="3" [(ngModel)]="modalInfo.notNeuteredCount" name="notNeuteredCount" />
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col">
+          <label for="file-neuteredCount">已紮母</label>
+          <input type="text" id="file-neuteredCount" class="form-control" type="number" step="1" maxlength="3" [(ngModel)]="modalInfo.neuteredCount" name="neuteredCount" />
+        </div>
+        <div class="col">
+          <label for="file-maleDogCount">公狗</label>
+          <input type="text" id="file-maleDogCount" class="form-control" type="number" step="1" maxlength="3" [(ngModel)]="modalInfo.maleDogCount" name="maleDogCount" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="file-contact">聯絡方式</label>
+        <input class="form-control" id="file-contact" [(ngModel)]="modalInfo.contact" name="contact" />
+      </div>
+      <div class="form-group">
+        <label for="file-description">說明</label>
+        <textarea class="form-control" id="file-description" rows="3" [(ngModel)]="modalInfo.description" name="description"></textarea>
       </div>
     </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="hideModal()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="save()">Save</button>
   </div>
 </ng-template>
 
 <agm-map [latitude]="centerPoint.latitude" [longitude]="centerPoint.longitude" [zoom]="centerPoint.zoom">
   <agm-overlay *ngFor="let marker of markers" #infowindow [latitude]="marker.latitude" [longitude]="marker.longitude">
-    <img class="agm-img" [class.agm-img-selected]="marker.icon.selected === true" src="{{ marker.icon.url }}" (click)="openModal(marker.id)" />
+    <img class="agm-img" [class.agm-img-selected]="marker.icon.selected" src="{{ marker.icon.url }}" (click)="openModal(marker.id)" />
     <!-- <agm-info-window #infowindow [latitude]="marker.latitude + 0.0005" [longitude]="marker.longitude" [isOpen]="isOpen">
         <div>
           <h5>{{ marker.title }}</h5>

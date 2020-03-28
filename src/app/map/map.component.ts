@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ElementRef, ViewChild } from "@angular/core";
-import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { BsModalService, BsModalRef, ModalOptions } from "ngx-bootstrap/modal";
 import { IMapCenterPointInfo, IFileListCheckWithDB, IFile } from "../model/map";
 import { getCenterPoint } from "../utility/geoLocationHelper";
 
@@ -18,7 +18,7 @@ export class MapComponent implements OnInit {
   modalRef: BsModalRef;
   isOpenSideNav: Boolean = false;
 
-  modalInfo: IFile;
+  modalInfo: IFile = {};
 
   constructor(private modalService: BsModalService) {}
 
@@ -294,15 +294,15 @@ export class MapComponent implements OnInit {
           // scaledSize: { height: 40, width: 40 },
           selected: false
         };
-        f.fileInfo.title = `${f.fileInfo.latitude}, ${f.fileInfo.longitude}`;
+        // f.fileInfo.title = `${f.fileInfo.latitude}, ${f.fileInfo.longitude}`;
         this.markers.push(f.fileInfo);
       }
     });
 
+    this.setCenterPoint();
+
     // console.log(this.markers);
 
-    this.centerPoint = getCenterPoint(this.markers);
-    this.centerPoint.zoom = 15;
     // console.log(this.centerPoint);
 
     // setTimeout(() => {
@@ -320,17 +320,29 @@ export class MapComponent implements OnInit {
     // }, 7000);
   }
 
+  setCenterPoint() {
+    this.centerPoint = getCenterPoint(this.markers);
+    this.centerPoint.zoom = 15;
+  }
+
   public markerClick(e) {
-    console.log(e);
+    // console.log(e);
   }
 
   openModal(markerId) {
-    console.log("markerId: ", markerId);
-    this.modalRef = this.modalService.show(this.myModal);
+    // console.log("markerId: ", markerId);
+    // this.modalInfo.title = "test123";
+    const file = this.files.find(f => f.id === markerId);
+
+    console.log(file);
+    this.modalInfo = file.fileInfo;
+    this.modalInfo.isPending = true;
+    const option: ModalOptions = { backdrop: "static", keyboard: false };
+    this.modalRef = this.modalService.show(this.myModal, option);
   }
 
   hideModal() {
-    console.log(this.myModal);
+    // console.log(this.myModal);
     this.modalRef.hide();
   }
 
@@ -342,5 +354,9 @@ export class MapComponent implements OnInit {
   closeNav() {
     this.sideNav.nativeElement.style.width = "0px";
     this.isOpenSideNav = false;
+  }
+
+  save() {
+    console.log("save:", this.modalInfo);
   }
 }
