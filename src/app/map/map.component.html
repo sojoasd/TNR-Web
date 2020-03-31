@@ -9,60 +9,19 @@
 
 <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
 
-<div #mySidenav id="mySidenav" class="sidenav" [ngClass]="{ 'sidenav-shadow': isOpenSideNav }">
+<div #sideNavHeader id="sideNavHeader" class="sidenav side-header">
   <div>
     <a href="javascript:void(0)" class="header-btn header-btn-refresh"><i class="fa fa-refresh"></i></a>
     <a href="javascript:void(0)" class="header-btn header-btn-import" title="all import"><i class="fa fa-cloud-download"></i></a>
     <a href="javascript:void(0)" class="header-btn header-btn-close" (click)="closeNav()"><i class="fa fa-times"></i></a>
   </div>
 
-  <br />
+</div>
+
+<div #sideNavBody id="sideNavBody" class="sidenav side-body">
   <div class="file-info" *ngFor="let side of files">
     <app-side-nav-sub [side]="side"></app-side-nav-sub>
-    <!-- <div class="side-img-div lazy">
-      <img class="side-img" data-src="https://drive.google.com/thumbnail?id=1rvZc-NnM7YrUIFtNz0WqR6RoCtkw2VAJ" />
-      <div class="img-handle">
-        <span><i class="fa fa-cloud-download"></i></span>
-        <span><i class="fa fa-trash-o"></i></span>
-      </div>
-    </div>
-    <div class="side-img-div lazy">
-      <img class="side-img" data-src="https://drive.google.com/thumbnail?id=1Z1jCfQXeKKGy20mc0Jcy3zyiHTnpd3eJ" />
-      <div class="img-handle">
-        <span><i class="fa fa-cloud-download"></i></span>
-        <span><i class="fa fa-trash-o"></i></span>
-      </div>
-    </div>
-    <div class="side-img-div lazy">
-      <img class="side-img" data-src="https://drive.google.com/thumbnail?id=1i0mieCYGxzrz8ALckqVctWTYltUIe90l" />
-      <div class="img-handle">
-        <span><i class="fa fa-cloud-download"></i></span>
-        <span><i class="fa fa-trash-o"></i></span>
-      </div>
-    </div>
-    <div class="side-img-div lazy">
-      <img class="side-img" data-src="https://drive.google.com/thumbnail?id=1iVBSMX37hlXqQYg2-2gRJP3BIlDBRX_d" />
-      <div class="img-handle">
-        <span><i class="fa fa-cloud-download"></i></span>
-        <span><i class="fa fa-trash-o"></i></span>
-      </div>
-    </div>
-    <div class="side-img-div lazy">
-      <img class="side-img" data-src="https://drive.google.com/thumbnail?id=1PHM6g09ZqDSanm0_ZqCx8xR2BCbcpmIs" />
-      <div class="img-handle">
-        <span><i class="fa fa-cloud-download"></i></span>
-        <span><i class="fa fa-trash-o"></i></span>
-      </div>
-    </div>
-    <div class="side-img-div lazy">
-      <img class="side-img" data-src="https://drive.google.com/thumbnail?id=1_e8WmtJCWjMF1use1hNvjvw9wN9HIJqP" />
-      <div class="img-handle">
-        <span><i class="fa fa-cloud-download"></i></span>
-        <span><i class="fa fa-trash-o"></i></span>
-      </div>
-    </div> -->
   </div>
-  <br />
 </div>
 
 <span style="font-size:30px;cursor:pointer" (click)="openNav()">&#9776; Images</span>

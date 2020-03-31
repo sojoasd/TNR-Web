@@ -9,7 +9,8 @@ import { getCenterPoint } from "../utility/geoLocationHelper";
   styleUrls: ["./map.component.css"]
 })
 export class MapComponent implements OnInit {
-  @ViewChild("mySidenav") sideNav: ElementRef;
+  @ViewChild("sideNavHeader") sideNavHeader: ElementRef;
+  @ViewChild("sideNavBody") sideNavBody: ElementRef;
   @ViewChild("template") myModal: TemplateRef<any>;
 
   centerPoint: IMapCenterPointInfo;
@@ -347,13 +348,13 @@ export class MapComponent implements OnInit {
   }
 
   openNav() {
-    this.sideNav.nativeElement.style.width = "300px";
-    this.isOpenSideNav = true;
+    this.sideNavHeader.nativeElement.style.width = "300px";
+    this.sideNavBody.nativeElement.style.width = "300px";
   }
 
   closeNav() {
-    this.sideNav.nativeElement.style.width = "0px";
-    this.isOpenSideNav = false;
+    this.sideNavHeader.nativeElement.style.width = "0px";
+    this.sideNavBody.nativeElement.style.width = "0px";
   }
 
   save() {
