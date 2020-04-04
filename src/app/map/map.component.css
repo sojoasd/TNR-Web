@@ -1,5 +1,5 @@
 agm-map {
-  height: 80vh;
+  height: 90vh;
 }
 
 .agm-img {
@@ -14,7 +14,7 @@ agm-map {
 }
 
 .agm-img-selected {
-  border: 3px solid red;
+  border: 3px solid #ff3333;
 }
 
 .sidenav {
@@ -65,7 +65,7 @@ agm-map {
 }
 
 .db-exist {
-  background-color: lightgreen;
+  background-color: #99ff99;
 }
 
 .sidenav a,

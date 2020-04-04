@@ -4,11 +4,17 @@ interface IMapCenterPointInfo {
   longitude: number;
   zoom?: number;
 }
+
+interface Icon {
+  url: string;
+  selected: boolean;
+}
+
 interface IFile {
   id?: string;
   title?: string;
   folderId?: string;
-  icon?: any;
+  icon?: Icon;
   fileName?: string;
   latitude?: number;
   longitude?: number;
@@ -32,6 +38,7 @@ interface IFileListCheckWithDB {
   fileName: string;
   isDBExist: boolean;
   fileInfo?: IFile;
+  selected?: boolean;
 }
 
 export { IMapCenterPointInfo, IFileListCheckWithDB, IFile };

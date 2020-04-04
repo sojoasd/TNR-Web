@@ -72,8 +72,8 @@ export class MapComponent implements OnInit {
           id: "1vnM2l6IVY8K8RDcFwcdzlCkHZDd1cLJQ",
           folderId: "1L0avkeNjyQYq8vhRdxWMOjYxLiW24t23",
           fileName: "IMG_7232.JPG",
-          latitude: 25.0117778888889,
-          longitude: 121.54583611111111,
+          latitude: 24.961751222222222,
+          longitude: 121.53372222222221,
           createEpochDate: 1583594470666,
           isPending: true,
           contact: "0911123321",
@@ -298,30 +298,15 @@ export class MapComponent implements OnInit {
         // f.fileInfo.title = `${f.fileInfo.latitude}, ${f.fileInfo.longitude}`;
         this.markers.push(f.fileInfo);
       }
+
+      f.selected = false;
     });
 
     this.setCenterPoint();
-
-    // console.log(this.markers);
-
-    // console.log(this.centerPoint);
-
-    // setTimeout(() => {
-    //   this.markers.map(m => {
-    //     m.icon.selected = true;
-    //     return m;
-    //   });
-    // }, 5000);
-
-    // setTimeout(() => {
-    //   this.markers.map(m => {
-    //     m.icon.selected = false;
-    //     return m;
-    //   });
-    // }, 7000);
   }
 
   setCenterPoint() {
+    // console.log("center: ", getCenterPoint(this.markers));
     this.centerPoint = getCenterPoint(this.markers);
     this.centerPoint.zoom = 15;
   }
@@ -330,16 +315,52 @@ export class MapComponent implements OnInit {
     // console.log(e);
   }
 
-  openModal(markerId) {
+  changeCenterPoint(markerId: string) {
+    const file = this.files.find(f => f.id === markerId);
+
+    if (file.fileInfo) {
+      this.centerPoint.latitude = file.fileInfo.latitude;
+      this.centerPoint.longitude = file.fileInfo.longitude;
+
+      this.changeIconSelected(markerId);
+      this.changeSideSelected(markerId);
+    }
+  }
+
+  changeIconSelected(markerId: string) {
+    this.markers.map(m => {
+      if (m.id === markerId) {
+        m.icon.selected = true;
+      } else {
+        m.icon.selected = false;
+      }
+    });
+  }
+
+  changeSideSelected(markerId: string) {
+    this.files.map(m => {
+      if (m.id === markerId) {
+        m.selected = true;
+      } else {
+        m.selected = false;
+      }
+    });
+  }
+
+  openModal(markerId: string) {
     // console.log("markerId: ", markerId);
     // this.modalInfo.title = "test123";
     const file = this.files.find(f => f.id === markerId);
 
-    console.log(file);
     this.modalInfo = file.fileInfo;
-    this.modalInfo.isPending = true;
     const option: ModalOptions = { backdrop: "static", keyboard: false };
     this.modalRef = this.modalService.show(this.myModal, option);
+
+    this.changeIconSelected(markerId);
+    this.changeSideSelected(markerId);
+
+    const side = document.getElementById(`side-${markerId}`);
+    side.scrollIntoView({ block: "center", behavior: "smooth" });
   }
 
   hideModal() {
@@ -355,6 +376,9 @@ export class MapComponent implements OnInit {
   closeNav() {
     this.sideNavHeader.nativeElement.style.width = "0px";
     this.sideNavBody.nativeElement.style.width = "0px";
+
+    this.markers.map(m => (m.icon.selected = false));
+    this.files.map(m => (m.selected = false));
   }
 
   save() {
