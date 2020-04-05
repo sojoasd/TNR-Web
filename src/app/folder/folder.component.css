@@ -46,7 +46,7 @@
   transform: translateY(6px);
   opacity: 1;
 }
-#folder3 i.fa-folder,
-#folder3-content h2 .fa-folder {
+#folder-div i.fa-folder,
+#folder-div-content h2 .fa-folder {
   color: #6fdbeb;
 }

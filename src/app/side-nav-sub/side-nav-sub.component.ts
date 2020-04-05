@@ -15,11 +15,15 @@ export class SideNavSubComponent implements OnInit {
 
   ngOnInit() {}
 
-  changeCenterPoint(fileId) {
+  changeCenterPoint(fileId: string) {
     this.parent.changeCenterPoint(fileId);
   }
 
-  openModal(fileId) {
+  import(fileId: string) {
+    this.parent.import(fileId);
+  }
+
+  openModal(fileId: string) {
     this.parent.openModal(fileId);
   }
 }

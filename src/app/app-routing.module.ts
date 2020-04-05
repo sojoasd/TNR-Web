@@ -11,7 +11,7 @@ import { FolderComponent } from "./folder/folder.component";
 import { MapComponent } from "./map/map.component";
 
 const routes: Routes = [
-  { path: "", redirectTo: "map", pathMatch: "full" },
+  { path: "", redirectTo: "login", pathMatch: "full" },
   {
     path: "",
     component: LayoutComponent,
@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: "contact", component: ContactComponent, canActivate: [EnsureLoginGuard] },
       { path: "folder-list", component: FolderListComponent },
       { path: "folder", component: FolderComponent },
-      { path: "map", component: MapComponent }
+      { path: "map/:id", component: MapComponent }
     ]
   },
   { path: "**", redirectTo: "login", pathMatch: "full" },

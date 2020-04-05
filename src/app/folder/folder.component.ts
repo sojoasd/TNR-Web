@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-folder",
@@ -8,7 +9,11 @@ import { Component, OnInit, Input } from "@angular/core";
 export class FolderComponent implements OnInit {
   @Input() folder;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {}
+
+  goToMap(folderId: string) {
+    this.router.navigate(["/map", folderId]);
+  }
 }

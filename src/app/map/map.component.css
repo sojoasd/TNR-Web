@@ -164,3 +164,7 @@ agm-map {
 .checkbox {
   padding: 0.75rem 0 0.75rem 0;
 }
+
+.input-required {
+  border-color: #dc3545;
+}

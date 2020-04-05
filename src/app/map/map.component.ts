@@ -1,7 +1,14 @@
 import { Component, OnInit, TemplateRef, ElementRef, ViewChild } from "@angular/core";
 import { BsModalService, BsModalRef, ModalOptions } from "ngx-bootstrap/modal";
-import { IMapCenterPointInfo, IFileListCheckWithDB, IFile } from "../model/map";
+import { IMapCenterPointInfo, IFileListCheckWithDB, IClientFile } from "../model/map";
 import { getCenterPoint } from "../utility/geoLocationHelper";
+import { ActivatedRoute } from "@angular/router";
+import { UserService } from "src/app/service/user-service";
+import { ILoginUser } from "../model/user";
+import { HttpClient } from "@angular/common/http";
+import { IHttpRequest } from "../model/request";
+import HttpHelper from "../utility/httpHelper";
+import { IFile } from "../model/folder";
 
 @Component({
   selector: "app-map",
@@ -13,281 +20,52 @@ export class MapComponent implements OnInit {
   @ViewChild("sideNavBody") sideNavBody: ElementRef;
   @ViewChild("template") myModal: TemplateRef<any>;
 
+  loading: boolean;
+  userInfo: ILoginUser;
+  folderId: string;
   centerPoint: IMapCenterPointInfo;
-  files: IFileListCheckWithDB[];
-  markers: IFile[] = [];
+  files: IFileListCheckWithDB[] = [];
+  markers: IClientFile[] = [];
   modalRef: BsModalRef;
   isOpenSideNav: Boolean = false;
 
-  modalInfo: IFile = {};
+  modalInfo: IClientFile = {};
 
-  constructor(private modalService: BsModalService) {}
+  constructor(private activeRouter: ActivatedRoute, private modalService: BsModalService, private userService: UserService, private httpClient: HttpClient) {}
 
   ngOnInit() {
-    this.files = [
-      {
-        id: "1rvZc-NnM7YrUIFtNz0WqR6RoCtkw2VAJ",
-        fileName: "IMG_7306.JPG",
-        isDBExist: true,
-        fileInfo: {
-          id: "1rvZc-NnM7YrUIFtNz0WqR6RoCtkw2VAJ",
-          folderId: "1L0avkeNjyQYq8vhRdxWMOjYxLiW24t23",
-          fileName: "IMG_7306.JPG",
-          latitude: 25.01178888888889,
-          longitude: 121.54583611111111,
-          createEpochDate: 1582979556
-        }
-      },
-      {
-        id: "1Z1jCfQXeKKGy20mc0Jcy3zyiHTnpd3eJ",
-        fileName: "IMG_7284.JPG",
-        isDBExist: true,
-        fileInfo: {
-          id: "1Z1jCfQXeKKGy20mc0Jcy3zyiHTnpd3eJ",
-          folderId: "1L0avkeNjyQYq8vhRdxWMOjYxLiW24t23",
-          fileName: "IMG_7284.JPG",
-          latitude: 24.889805555555554,
-          longitude: 121.53086944444445,
-          createEpochDate: 1582900648
-        }
-      },
-      {
-        id: "1i0mieCYGxzrz8ALckqVctWTYltUIe90l",
-        fileName: "IMG_7297.JPG",
-        isDBExist: true,
-        fileInfo: {
-          id: "1i0mieCYGxzrz8ALckqVctWTYltUIe90l",
-          folderId: "1L0avkeNjyQYq8vhRdxWMOjYxLiW24t23",
-          fileName: "IMG_7297.JPG",
-          latitude: 24.964747222222222,
-          longitude: 121.53687222222221,
-          createEpochDate: 1582963132
-        }
-      },
-      {
-        id: "1vnM2l6IVY8K8RDcFwcdzlCkHZDd1cLJQ",
-        fileName: "IMG_7232.JPG",
-        isDBExist: true,
-        fileInfo: {
-          id: "1vnM2l6IVY8K8RDcFwcdzlCkHZDd1cLJQ",
-          folderId: "1L0avkeNjyQYq8vhRdxWMOjYxLiW24t23",
-          fileName: "IMG_7232.JPG",
-          latitude: 24.961751222222222,
-          longitude: 121.53372222222221,
-          createEpochDate: 1583594470666,
-          isPending: true,
-          contact: "0911123321",
-          description: "飼主不想結紮",
-          isChained: true,
-          isNoDog: false,
-          isStray: false,
-          maleDogCount: 1,
-          neuteredCount: 0,
-          notNeuteredCount: 2,
-          uncertainCount: 1,
-          updateEpochDate: 1583612787874
-        }
-      },
-      {
-        id: "1-k3wM23dk17XirbKnud4w1qon87Fw-Gj",
-        fileName: "E8071B7C-BAE5-486B-BFAC-AF4DB2880B27.jpg",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1zuSY-aZkf3YL-5Aqbhoa2njRt7geH89v",
-        fileName: "683185A6-A0AF-4FDB-87D6-F6DB8CCEFB79.jpg",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1QV2ESgw6aCxC5B01N9fI10hXcXDwifd6",
-        fileName: "D2C313CA-6B84-437F-B570-6B22FAA83D97.jpg",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1Eg3pYZRU61yY7FfP-OcKtnMIkDdg64u5",
-        fileName: "9F9A2A64-6660-4499-BF11-339336CE368C.jpg",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1AGaWmqX02ohPts0rkmL0kA293jDZFbSJ",
-        fileName: "0BF67F98-2FEC-4756-A2A6-A237CD373634.jpg",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1lUjnerwMTQEamW7f03dCDphtYb7l3Ew0",
-        fileName: "IMG_7193.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1HcI4TyE4FUHWe_Diu8LgyOBNqPm3blyd",
-        fileName: "IMG_7254.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1iR9E-SmqaHRo_4VOgVTPeLLOiSemYX9t",
-        fileName: "IMG_7107.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1PHM6g09ZqDSanm0_ZqCx8xR2BCbcpmIs",
-        fileName: "IMG_7188.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1iVBSMX37hlXqQYg2-2gRJP3BIlDBRX_d",
-        fileName: "IMG_7164.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1z6UUixAco3Zj_GjH2UO446BMA85Hu6XW",
-        fileName: "IMG_7154.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1MFYSpSgU5Ew2MFiTjOiGXOV9uDRBfG7X",
-        fileName: "IMG_7170.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1_e8WmtJCWjMF1use1hNvjvw9wN9HIJqP",
-        fileName: "IMG_7041.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1W6lnktOas0NhcQzb1m5vW4TwFOhbrYlo",
-        fileName: "IMG_6962.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1xKjFGu9iRWMTgE5u5GJXVqsJ-ls1K_OC",
-        fileName: "IMG_6924.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1Dsxtc09VdYHXxSMJ504DYxpRrf3PZRjT",
-        fileName: "IMG_6967.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1NaF8BDYOn_7BqBmr5WMN-kHnVFhj9OCw",
-        fileName: "F5A076F5-0582-490F-9174-586F85697134.jpg",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "10ymQuUM9-TOdBHCn9tL6oOlbQ4mIl5us",
-        fileName: "0F110EAF-63CA-4A73-B0D1-930F223C76E8.jpg",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1w1HCz5JAN8gmnufnC5vjq5KqjHLu5mHS",
-        fileName: "0A5D12CE-BE63-4E9E-B176-64DB77860D63.jpg",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1Y1zJ5HqNKJ10j5V67ZT488M6ae_Uxv-M",
-        fileName: "IMG_7340.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1IaE-jHu2IZdvxIFIRci_Ig8bxXJv0Rxk",
-        fileName: "IMG_6898.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "15-kaztidqDIxzQBdrRlEfkfCKdRW-XRF",
-        fileName: "IMG_6962.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "10xcgT4mmoMHzKXDXogDgfgRW9-9J2UC2",
-        fileName: "IMG_6920.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1XA1B0qBeQ60_Iu5uf34ddNxumTcWwEy9",
-        fileName: "IMG_6941.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1EMn2u-grJJH8mcXuREL1JKfBI7cOonXt",
-        fileName: "IMG_6936.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1ooAVrKCgOpRVHRZ0m6jbZpHsa2sIXNJF",
-        fileName: "IMG_6892.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1rV6Zr4F2L3Ty2kVTwnSkUzjW1mTB27zG",
-        fileName: "IMG_6960.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1UIePCn1uxFtbMPI0Sztbn1qhoUE430SQ",
-        fileName: "IMG_6666.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1-znq-7nFWFd_2SSH1EVEI5LnieII86zm",
-        fileName: "IMG_6961.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1afaAVlhX2hPczINLBzLOdzE2cpw9LgRE",
-        fileName: "IMG_7325.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1NlTzpwSMAPVE4LN0z-CflU0thB8hwS4c",
-        fileName: "IMG_7321.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1MKgc8yAC4LFO_vS51oeiNQxRrY_eVeVA",
-        fileName: "IMG_6966.JPG",
-        isDBExist: false,
-        fileInfo: null
-      },
-      {
-        id: "1RRfjTKPJybQ0wThnOejSGvMo0Efr7hOs",
-        fileName: "IMG_6917.JPG",
-        isDBExist: false,
-        fileInfo: null
-      }
-    ];
+    this.folderId = this.activeRouter.snapshot.params.id;
 
+    this.userInfo = this.userService.getUserInfo();
+    this.httpClient
+      .get<IFileListCheckWithDB[]>(`http://localhost:4002/driver/files?folderId=${this.folderId}`, {
+        headers: { Authorization: this.userInfo.accessToken }
+      })
+      .subscribe((res: IFileListCheckWithDB[]) => {
+        this.files = res;
+        // this.files.map(f => {
+        //   if (f.isDBExist) {
+        //     f.fileInfo.icon = {
+        //       url: `https://drive.google.com/thumbnail?id=${f.id}`,
+        //       // scaledSize: { height: 40, width: 40 },
+        //       selected: false
+        //     };
+        //     this.markers.push(f.fileInfo);
+        //   }
+
+        //   f.selected = false;
+        // });
+
+        this.refreshFiles();
+
+        this.setCenterPoint();
+      });
+
+    const folderId = this.activeRouter.snapshot.params.id;
+    if (!folderId) return;
+  }
+
+  refreshFiles(importFiles: IClientFile[] = []) {
     this.files.map(f => {
       if (f.isDBExist) {
         f.fileInfo.icon = {
@@ -295,19 +73,26 @@ export class MapComponent implements OnInit {
           // scaledSize: { height: 40, width: 40 },
           selected: false
         };
-        // f.fileInfo.title = `${f.fileInfo.latitude}, ${f.fileInfo.longitude}`;
+        this.markers.push(f.fileInfo);
+      }
+
+      if (importFiles.some(s => s.id === f.id)) {
+        f.isDBExist = true;
+        f.fileInfo = importFiles.find(s => s.id === f.id);
+        f.fileInfo.icon = {
+          url: `https://drive.google.com/thumbnail?id=${f.id}`,
+          selected: false
+        };
         this.markers.push(f.fileInfo);
       }
 
       f.selected = false;
     });
-
-    this.setCenterPoint();
   }
 
   setCenterPoint() {
     // console.log("center: ", getCenterPoint(this.markers));
-    this.centerPoint = getCenterPoint(this.markers);
+    this.centerPoint = getCenterPoint(this.markers.filter(f => f.latitude && f.longitude && f.latitude !== 0 && f.longitude !== 0));
     this.centerPoint.zoom = 15;
   }
 
@@ -348,8 +133,6 @@ export class MapComponent implements OnInit {
   }
 
   openModal(markerId: string) {
-    // console.log("markerId: ", markerId);
-    // this.modalInfo.title = "test123";
     const file = this.files.find(f => f.id === markerId);
 
     this.modalInfo = file.fileInfo;
@@ -381,7 +164,105 @@ export class MapComponent implements OnInit {
     this.files.map(m => (m.selected = false));
   }
 
-  save() {
-    console.log("save:", this.modalInfo);
+  async allImport() {
+    const fn = "MapComponent.allImport";
+    this.loading = true;
+
+    const fileIds = this.files
+      .filter(f => !f.isDBExist)
+      .map(m => {
+        return m.id;
+      });
+
+    try {
+      const result: IClientFile[] = await this.importCommon(fileIds);
+      console.log(fn, { result });
+
+      this.refreshFiles(result);
+    } catch (error) {
+      console.log(fn, error);
+      throw error;
+    }
+
+    this.loading = false;
+  }
+
+  async import(fileId: string) {
+    const fn = "MapComponent.import";
+    this.loading = true;
+
+    try {
+      const result: IClientFile[] = await this.importCommon([fileId]);
+      console.log({ result });
+
+      this.refreshFiles(result);
+    } catch (error) {
+      console.log(fn, error);
+      throw error;
+    }
+    this.loading = false;
+  }
+
+  async importCommon(fileIds: string[]): Promise<IClientFile[]> {
+    const request: IHttpRequest = {
+      url: "http://localhost:4002/driver/importFiles",
+      header: {
+        "Content-Type": "application/json",
+        Authorization: this.userInfo.accessToken
+      },
+      body: {
+        folderId: this.folderId,
+        fileIds: fileIds
+      }
+    };
+
+    const res = await HttpHelper.post(request);
+
+    return res as IClientFile[];
+  }
+
+  async save() {
+    const fn = "MapComponent.save";
+
+    if (!this.modalInfo.latitude || !this.modalInfo.longitude) return;
+
+    this.loading = true;
+
+    const body: IFile = {
+      id: this.modalInfo.id,
+      folderId: this.modalInfo.folderId,
+      fileName: this.modalInfo.fileName,
+      latitude: this.modalInfo.latitude,
+      longitude: this.modalInfo.longitude,
+      isPending: this.modalInfo.isPending ? this.modalInfo.isPending : false,
+      isStray: this.modalInfo.isStray ? this.modalInfo.isStray : false,
+      isNoDog: this.modalInfo.isNoDog ? this.modalInfo.isNoDog : false,
+      isChained: this.modalInfo.isChained ? this.modalInfo.isChained : false,
+      uncertainCount: this.modalInfo.uncertainCount ? this.modalInfo.uncertainCount : 0,
+      notNeuteredCount: this.modalInfo.notNeuteredCount ? this.modalInfo.notNeuteredCount : 0,
+      neuteredCount: this.modalInfo.neuteredCount ? this.modalInfo.neuteredCount : 0,
+      maleDogCount: this.modalInfo.maleDogCount ? this.modalInfo.maleDogCount : 0,
+      description: this.modalInfo.description ? this.modalInfo.description : "",
+      contact: this.modalInfo.contact ? this.modalInfo.contact : ""
+    };
+
+    const request: IHttpRequest = {
+      url: "http://localhost:4002/driver/files",
+      header: {
+        "Content-Type": "application/json",
+        Authorization: this.userInfo.accessToken
+      },
+      body: body
+    };
+
+    try {
+      await HttpHelper.patch(request);
+      this.modalRef.hide();
+    } catch (error) {
+      console.log(fn, error);
+      throw error;
+    }
+
+    this.loading = false;
   }
 }

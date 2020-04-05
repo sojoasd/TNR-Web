@@ -46,4 +46,22 @@ export default class HttpHelper {
         );
     });
   }
+
+  static patch(request: IHttpRequest) {
+    return new Promise((resolve, reject) => {
+      http
+        .patch(request.url, request.body, {
+          headers: request.header
+        })
+        .subscribe(
+          data => {
+            const url = data as string;
+            resolve(url);
+          },
+          error => {
+            reject(error);
+          }
+        );
+    });
+  }
 }

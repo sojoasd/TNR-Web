@@ -10,9 +10,8 @@ interface Icon {
   selected: boolean;
 }
 
-interface IFile {
+interface IClientFile {
   id?: string;
-  title?: string;
   folderId?: string;
   icon?: Icon;
   fileName?: string;
@@ -37,8 +36,8 @@ interface IFileListCheckWithDB {
   id: string;
   fileName: string;
   isDBExist: boolean;
-  fileInfo?: IFile;
+  fileInfo?: IClientFile;
   selected?: boolean;
 }
 
-export { IMapCenterPointInfo, IFileListCheckWithDB, IFile };
+export { IMapCenterPointInfo, IFileListCheckWithDB, IClientFile };
