@@ -43,22 +43,8 @@ export class MapComponent implements OnInit {
       })
       .subscribe((res: IFileListCheckWithDB[]) => {
         this.files = res;
-        // this.files.map(f => {
-        //   if (f.isDBExist) {
-        //     f.fileInfo.icon = {
-        //       url: `https://drive.google.com/thumbnail?id=${f.id}`,
-        //       // scaledSize: { height: 40, width: 40 },
-        //       selected: false
-        //     };
-        //     this.markers.push(f.fileInfo);
-        //   }
-
-        //   f.selected = false;
-        // });
-
+        console.log({ res: this.files });
         this.refreshFiles();
-
-        this.setCenterPoint();
       });
 
     const folderId = this.activeRouter.snapshot.params.id;
@@ -88,11 +74,22 @@ export class MapComponent implements OnInit {
 
       f.selected = false;
     });
+
+    this.setCenterPoint();
   }
 
   setCenterPoint() {
     // console.log("center: ", getCenterPoint(this.markers));
-    this.centerPoint = getCenterPoint(this.markers.filter(f => f.latitude && f.longitude && f.latitude !== 0 && f.longitude !== 0));
+    console.log("markers: ", this.markers);
+    if (this.markers.length > 0) {
+      this.centerPoint = getCenterPoint(this.markers.filter(f => f.latitude && f.longitude && f.latitude !== 0 && f.longitude !== 0));
+    } else {
+      this.centerPoint.latitude = 0;
+      this.centerPoint.longitude = 0;
+    }
+
+    console.log("center: ", this.centerPoint);
+
     this.centerPoint.zoom = 15;
   }
 
@@ -168,15 +165,39 @@ export class MapComponent implements OnInit {
     const fn = "MapComponent.allImport";
     this.loading = true;
 
+    const maxCount = 3;
+
     const fileIds = this.files
       .filter(f => !f.isDBExist)
       .map(m => {
         return m.id;
       });
 
+    const requestCount = Math.ceil(fileIds.length / maxCount);
+
+    const requestAry = [];
+    for (let index = 0; index < requestCount; index++) {
+      const min = index * maxCount;
+      const max = min + maxCount;
+      requestAry.push(fileIds.slice(min, max));
+    }
+
     try {
-      const result: IClientFile[] = await this.importCommon(fileIds);
-      console.log(fn, { result });
+      let resultAry = [];
+
+      await Promise.all(
+        requestAry.map(async fileIds => {
+          try {
+            const result: IClientFile[] = await this.importCommon(fileIds);
+            console.log(fn, { result });
+            resultAry = resultAry.concat([...result]);
+          } catch (error) {
+            console.log({ fileIds, msg: error.message });
+          }
+        })
+      );
+
+      const result = [...resultAry.filter(f => f !== null)];
 
       this.refreshFiles(result);
     } catch (error) {
@@ -264,5 +285,62 @@ export class MapComponent implements OnInit {
     }
 
     this.loading = false;
+  }
+
+  async delete(fileId: string) {
+    const fn = "MapComponent.delete";
+    this.loading = true;
+
+    try {
+      await this.deleteCommon([fileId]);
+    } catch (error) {
+      console.log(fn, error);
+      throw error;
+    }
+    this.loading = false;
+  }
+
+  async allDelete() {
+    const fn = "MapComponent.allDelete";
+    this.loading = true;
+
+    try {
+      const fileIds = this.markers.map(m => {
+        return m.id;
+      });
+
+      await this.deleteCommon(fileIds);
+    } catch (error) {
+      console.log(fn, error);
+      throw error;
+    }
+    this.loading = false;
+  }
+
+  async deleteCommon(fileIds: string[]) {
+    const request: IHttpRequest = {
+      url: "http://localhost:4002/driver/files",
+      header: {
+        "Content-Type": "application/json",
+        Authorization: this.userInfo.accessToken
+      },
+      body: fileIds
+    };
+
+    try {
+      await HttpHelper.delete(request);
+
+      this.files.map(m => {
+        if (fileIds.some(s => s === m.id)) {
+          m.isDBExist = false;
+          m.fileInfo = null;
+          m.selected = false;
+        }
+      });
+      this.markers = this.markers.filter(f => !fileIds.some(s => s === f.id));
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 }

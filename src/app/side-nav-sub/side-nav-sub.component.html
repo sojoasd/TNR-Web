@@ -3,6 +3,6 @@
   <div class="img-handle">
     <span *ngIf="side.isDBExist" (click)="openModal(side.id)"><i class="fa fa-pencil"></i></span>
     <span *ngIf="!side.isDBExist" (click)="import(side.id)"><i class="fa fa-cloud-download"></i></span>
-    <span *ngIf="side.isDBExist"><i class="fa fa-trash-o"></i></span>
+    <span *ngIf="side.isDBExist" (click)="delete(side.id)"><i class="fa fa-trash-o"></i></span>
   </div>
 </div>

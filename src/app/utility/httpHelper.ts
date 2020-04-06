@@ -64,4 +64,23 @@ export default class HttpHelper {
         );
     });
   }
+
+  static delete(request: IHttpRequest) {
+    return new Promise((resolve, reject) => {
+      http
+        .delete(request.url, {
+          headers: request.header,
+          params: request.body
+        })
+        .subscribe(
+          data => {
+            const url = data as string;
+            resolve(url);
+          },
+          error => {
+            reject(error);
+          }
+        );
+    });
+  }
 }

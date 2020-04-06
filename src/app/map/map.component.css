@@ -103,6 +103,10 @@ agm-map {
   right: 190px;
 }
 
+.header-btn-delete {
+  right: 140px;
+}
+
 .fa-refresh {
   color: green;
 }

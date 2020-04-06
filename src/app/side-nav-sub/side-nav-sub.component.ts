@@ -26,4 +26,8 @@ export class SideNavSubComponent implements OnInit {
   openModal(fileId: string) {
     this.parent.openModal(fileId);
   }
+
+  delete(fileId: string) {
+    this.parent.delete(fileId);
+  }
 }
