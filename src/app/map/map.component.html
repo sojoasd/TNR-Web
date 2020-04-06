@@ -7,7 +7,13 @@
     </div>
 </agm-map> -->
 
-<ngx-loading id="loading-div" [show]="loading" [config]="{ backdropBorderRadius: '3px' }"></ngx-loading>
+<ng-template #customLoadingTemplate>
+  <div class="customLoadingTemplate">
+    <h3>{{loadingPercent}} %</h3>
+  </div>
+</ng-template>
+
+<ngx-loading id="loading-div" [show]="loading" [config]="{ backdropBorderRadius: '3px' }" [template]="customLoadingTemplate"></ngx-loading>
 
 <div #sideNavHeader id="sideNavHeader" class="sidenav side-header">
   <div>

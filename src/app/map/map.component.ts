@@ -21,6 +21,7 @@ export class MapComponent implements OnInit {
   @ViewChild("template") myModal: TemplateRef<any>;
 
   loading: boolean;
+  loadingPercent: number = 0;
   userInfo: ILoginUser;
   folderId: string;
   centerPoint: IMapCenterPointInfo;
@@ -164,7 +165,6 @@ export class MapComponent implements OnInit {
   async allImport() {
     const fn = "MapComponent.allImport";
     this.loading = true;
-
     const maxCount = 3;
 
     const fileIds = this.files
@@ -172,6 +172,8 @@ export class MapComponent implements OnInit {
       .map(m => {
         return m.id;
       });
+
+    const perPercent = Math.round((maxCount * 100) / fileIds.length);
 
     const requestCount = Math.ceil(fileIds.length / maxCount);
 
@@ -190,6 +192,7 @@ export class MapComponent implements OnInit {
           try {
             const result: IClientFile[] = await this.importCommon(fileIds);
             console.log(fn, { result });
+            this.loadingPercent += perPercent;
             resultAry = resultAry.concat([...result]);
           } catch (error) {
             console.log({ fileIds, msg: error.message });
