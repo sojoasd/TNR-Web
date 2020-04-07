@@ -165,6 +165,7 @@ export class MapComponent implements OnInit {
   async allImport() {
     const fn = "MapComponent.allImport";
     this.loading = true;
+    this.loadingPercent = 0;
     const maxCount = 3;
 
     const fileIds = this.files
@@ -214,10 +215,13 @@ export class MapComponent implements OnInit {
   async import(fileId: string) {
     const fn = "MapComponent.import";
     this.loading = true;
+    this.loadingPercent = 0;
 
     try {
+      this.loadingPercent = 90;
       const result: IClientFile[] = await this.importCommon([fileId]);
       console.log({ result });
+      this.loadingPercent = 100;
 
       this.refreshFiles(result);
     } catch (error) {
