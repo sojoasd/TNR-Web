@@ -18,10 +18,8 @@ const routes: Routes = [
     children: [
       { path: "login", pathMatch: "full", component: LoginComponent },
       { path: "index", component: MainComponent },
-      { path: "contact", component: ContactComponent, canActivate: [EnsureLoginGuard] },
-      { path: "folder-list", component: FolderListComponent },
-      { path: "folder", component: FolderComponent },
-      { path: "map/:id", component: MapComponent }
+      { path: "folder-list", component: FolderListComponent, canActivate: [EnsureLoginGuard] },
+      { path: "map/:id", component: MapComponent, canActivate: [EnsureLoginGuard] }
     ]
   },
   { path: "**", redirectTo: "login", pathMatch: "full" },

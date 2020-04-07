@@ -12,12 +12,14 @@ import HttpHelper from "../utility/httpHelper";
 })
 export class FolderListComponent implements OnInit {
   name: string;
+  loading: boolean;
 
   folders: IFolderInfo[] = [];
   constructor(private userService: UserService) {}
 
   async ngOnInit() {
-    this.userService.checkTokenExist();
+    this.loading = true;
+    // this.userService.checkTokenExist();
     const userInfo: ILoginUser = this.userService.getUserInfo();
 
     const request: IHttpRequest = {
@@ -36,5 +38,7 @@ export class FolderListComponent implements OnInit {
       console.log("error:", error);
       throw error;
     }
+
+    this.loading = false;
   }
 }
