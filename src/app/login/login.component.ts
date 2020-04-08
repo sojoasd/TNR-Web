@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { ILoginUser } from "src/app/model/user";
 import { UserService } from "src/app/service/user-service";
 import { IHttpRequest } from "../model/request";
+import { env } from "../../environments/environment";
 
 @Component({
   selector: "app-login",
@@ -29,7 +30,7 @@ export class LoginComponent implements OnInit {
     if (code) {
       const loginData = `code=${this.activeRouter.snapshot.queryParams.code}`;
 
-      const request: IHttpRequest = { url: "http://localhost:4002/account/login", body: { code: loginData } };
+      const request: IHttpRequest = { url: `${env.host}/account/login`, body: { code: loginData } };
 
       try {
         const data = await HttpHelper.post(request);
@@ -50,7 +51,7 @@ export class LoginComponent implements OnInit {
 
   async login() {
     try {
-      const request: IHttpRequest = { url: "http://localhost:4002/account/login" };
+      const request: IHttpRequest = { url: `${env.host}/account/login` };
       const data = await HttpHelper.get(request);
       const url = data as string;
       window.open(url, "_self");

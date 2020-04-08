@@ -9,6 +9,7 @@ import { HttpClient } from "@angular/common/http";
 import { IHttpRequest } from "../model/request";
 import HttpHelper from "../utility/httpHelper";
 import { IFile } from "../model/folder";
+import { env } from "../../environments/environment";
 
 @Component({
   selector: "app-map",
@@ -39,7 +40,7 @@ export class MapComponent implements OnInit {
 
     this.userInfo = this.userService.getUserInfo();
     this.httpClient
-      .get<IFileListCheckWithDB[]>(`http://localhost:4002/driver/files?folderId=${this.folderId}`, {
+      .get<IFileListCheckWithDB[]>(`${env.host}/driver/files?folderId=${this.folderId}`, {
         headers: { Authorization: this.userInfo.accessToken }
       })
       .subscribe((res: IFileListCheckWithDB[]) => {
@@ -219,7 +220,7 @@ export class MapComponent implements OnInit {
 
   async importCommon(fileIds: string[]): Promise<IClientFile[]> {
     const request: IHttpRequest = {
-      url: "http://localhost:4002/driver/importFiles",
+      url: `${env.host}/driver/importFiles`,
       header: {
         "Content-Type": "application/json",
         Authorization: this.userInfo.accessToken
@@ -261,7 +262,7 @@ export class MapComponent implements OnInit {
     };
 
     const request: IHttpRequest = {
-      url: "http://localhost:4002/driver/files",
+      url: `${env.host}/driver/files`,
       header: {
         "Content-Type": "application/json",
         Authorization: this.userInfo.accessToken
@@ -309,7 +310,7 @@ export class MapComponent implements OnInit {
 
   async deleteCommon(fileIds: string[]) {
     const request: IHttpRequest = {
-      url: "http://localhost:4002/driver/files",
+      url: `${env.host}/driver/files`,
       header: {
         "Content-Type": "application/json",
         Authorization: this.userInfo.accessToken

@@ -4,6 +4,7 @@ import { ILoginUser } from "src/app/model/user";
 import { IFolderInfo } from "../model/folder";
 import { IHttpRequest } from "../model/request";
 import HttpHelper from "../utility/httpHelper";
+import { env } from "../../environments/environment";
 
 @Component({
   selector: "app-folder-list",
@@ -24,7 +25,7 @@ export class FolderListComponent implements OnInit {
     const userInfo: ILoginUser = this.userService.getUserInfo();
 
     const request: IHttpRequest = {
-      url: "http://localhost:4002/driver/folders",
+      url: `${env.host}/driver/folders`,
       header: {
         "Content-Type": "application/json",
         Authorization: userInfo.accessToken
