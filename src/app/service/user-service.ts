@@ -6,9 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
   providedIn: "root"
 })
 export class UserService {
-  constructor(private activeRouter: ActivatedRoute, private router: Router) {
-    // console.log("snapshot", this.activeRouter.snapshot);
-  }
+  constructor(private activeRouter: ActivatedRoute, private router: Router) {}
 
   setUserInfo(userInfo: ILoginUser) {
     localStorage.setItem("tnr-user", JSON.stringify(userInfo));

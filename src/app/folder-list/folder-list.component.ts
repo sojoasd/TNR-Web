@@ -14,6 +14,7 @@ export class FolderListComponent implements OnInit {
   name: string;
   loading: boolean;
 
+  originFolders: IFolderInfo[] = [];
   folders: IFolderInfo[] = [];
   constructor(private userService: UserService) {}
 
@@ -32,13 +33,16 @@ export class FolderListComponent implements OnInit {
 
     try {
       const data = (await HttpHelper.get(request)) as IFolderInfo[];
-      console.log({ data });
+      this.originFolders = data;
       this.folders = data;
     } catch (error) {
-      console.log("error:", error);
       throw error;
     }
 
     this.loading = false;
+  }
+
+  searchFolder(searchFolderInput: string) {
+    this.folders = this.originFolders.filter(f => f.name.toLowerCase().includes(searchFolderInput.toLowerCase()));
   }
 }

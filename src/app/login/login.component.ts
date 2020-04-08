@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
 
     if (code) {
       const loginData = `code=${this.activeRouter.snapshot.queryParams.code}`;
-      // console.log("code: ", loginData);
 
       const request: IHttpRequest = { url: "http://localhost:4002/account/login", body: { code: loginData } };
 
@@ -37,14 +36,11 @@ export class LoginComponent implements OnInit {
         this.userService.setUserInfo(data as ILoginUser);
         this.router.navigate(["/folder-list"]);
       } catch (error) {
-        console.log("error:", error);
         throw error;
       }
     }
 
     const userInfo = this.userService.getUserInfo();
-    // console.log("userInfo: ", userInfo);
-
     if (userInfo) {
       this.router.navigate(["/folder-list"]);
     }
@@ -58,19 +54,7 @@ export class LoginComponent implements OnInit {
       const data = await HttpHelper.get(request);
       const url = data as string;
       window.open(url, "_self");
-
-      // this.http.get("http://localhost:4002/account/login").subscribe(
-      //   data => {
-      //     // window.open(data);
-      //     const url = data as string;
-      //     window.open(url, "_self");
-      //   },
-      //   error => {
-      //     console.log(error);
-      //   }
-      // );
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

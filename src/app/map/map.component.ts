@@ -44,7 +44,6 @@ export class MapComponent implements OnInit {
       })
       .subscribe((res: IFileListCheckWithDB[]) => {
         this.files = res;
-        console.log({ res: this.files });
         this.refreshFiles();
       });
 
@@ -80,8 +79,6 @@ export class MapComponent implements OnInit {
   }
 
   setCenterPoint() {
-    // console.log("center: ", getCenterPoint(this.markers));
-    console.log("markers: ", this.markers);
     if (this.markers.length > 0) {
       this.centerPoint = getCenterPoint(this.markers.filter(f => f.latitude && f.longitude && f.latitude !== 0 && f.longitude !== 0));
     } else {
@@ -89,14 +86,10 @@ export class MapComponent implements OnInit {
       this.centerPoint.longitude = 0;
     }
 
-    console.log("center: ", this.centerPoint);
-
     this.centerPoint.zoom = 15;
   }
 
-  public markerClick(e) {
-    // console.log(e);
-  }
+  public markerClick(e) {}
 
   changeCenterPoint(markerId: string) {
     const file = this.files.find(f => f.id === markerId);
@@ -145,7 +138,6 @@ export class MapComponent implements OnInit {
   }
 
   hideModal() {
-    // console.log(this.myModal);
     this.modalRef.hide();
   }
 
@@ -192,12 +184,9 @@ export class MapComponent implements OnInit {
         requestAry.map(async fileIds => {
           try {
             const result: IClientFile[] = await this.importCommon(fileIds);
-            console.log(fn, { result });
             this.loadingPercent += perPercent;
             resultAry = resultAry.concat([...result]);
-          } catch (error) {
-            console.log({ fileIds, msg: error.message });
-          }
+          } catch (error) {}
         })
       );
 
@@ -205,7 +194,6 @@ export class MapComponent implements OnInit {
 
       this.refreshFiles(result);
     } catch (error) {
-      console.log(fn, error);
       throw error;
     }
 
@@ -220,12 +208,10 @@ export class MapComponent implements OnInit {
     try {
       this.loadingPercent = 90;
       const result: IClientFile[] = await this.importCommon([fileId]);
-      console.log({ result });
       this.loadingPercent = 100;
 
       this.refreshFiles(result);
     } catch (error) {
-      console.log(fn, error);
       throw error;
     }
     this.loading = false;
@@ -287,7 +273,6 @@ export class MapComponent implements OnInit {
       await HttpHelper.patch(request);
       this.modalRef.hide();
     } catch (error) {
-      console.log(fn, error);
       throw error;
     }
 
@@ -301,7 +286,6 @@ export class MapComponent implements OnInit {
     try {
       await this.deleteCommon([fileId]);
     } catch (error) {
-      console.log(fn, error);
       throw error;
     }
     this.loading = false;
@@ -318,7 +302,6 @@ export class MapComponent implements OnInit {
 
       await this.deleteCommon(fileIds);
     } catch (error) {
-      console.log(fn, error);
       throw error;
     }
     this.loading = false;
@@ -346,7 +329,6 @@ export class MapComponent implements OnInit {
       });
       this.markers = this.markers.filter(f => !fileIds.some(s => s === f.id));
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }
