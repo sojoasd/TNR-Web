@@ -1,0 +1,8 @@
+.logout {
+  position: relative;
+  left: 97%;
+}
+
+.logout a {
+  cursor: pointer;
+}
